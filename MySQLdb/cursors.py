@@ -155,17 +155,18 @@ class BaseCursor(object):
 
         if args is not None:
             if isinstance(query, bytes):
-                query = query.decode();
+                query = query.decode(charset)
 
-            if isinstance(args, dict):
-                query = query.format( **db.literal(args) )
-            elif isinstance(args, tuple) or isinstance(args, list):
-                query = query.format( *db.literal(args) )
-            else:
-                query = query.format( db.literal(args) )
+            query = query % db.literal(args)
+#            if isinstance(args, dict):
+#                query = query.format( **db.literal(args) )
+#            elif isinstance(args, tuple) or isinstance(args, list):
+#                query = query.format( *db.literal(args) )
+#            else:
+#                query = query.format( db.literal(args) )
 
         if isinstance(query, str):
-            query = query.encode(charset);
+            query = query.encode(charset)
 
         try:
             r = self._query(query)
@@ -219,12 +220,13 @@ class BaseCursor(object):
         try:
             q = []
             for a in args:
-                if isinstance(a, dict):
-                    data = qv.format(**db.literal(a))
-                elif isinstance(a, tuple) or isinstance(a, list):
-                    data = qv.format( *db.literal(a) )
-                else:
-                    data = qv.format( db.literal(a) )
+                data = qv % db.literal(a)
+#                if isinstance(a, dict):
+#                    data = qv.format(**db.literal(a))
+#                elif isinstance(a, tuple) or isinstance(a, list):
+#                    data = qv.format( *db.literal(a) )
+#                else:
+#                    data = qv.format( db.literal(a) )
                 q.append( data )
         except TypeError as msg:
             if msg.args[0] in ("not enough arguments for format string",
