@@ -103,8 +103,7 @@ class BaseCursor(object):
         del self.messages[:]
         
         db = self._get_db()
-        nr = db.next_result()
-        if nr == -1:
+        if (nr := db.next_result()) == -1:
             return None
         self._do_get_result()
         self._post_get_result()
@@ -434,8 +433,7 @@ class CursorUseResultMixIn(object):
         return self
 
     def next(self):
-        row = self.fetchone()
-        if row is None:
+        if (row := self.fetchone()) is None:
             raise StopIteration
         return row
     

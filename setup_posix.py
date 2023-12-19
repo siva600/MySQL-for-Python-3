@@ -16,8 +16,7 @@ def mysql_config(what):
 
     f = popen("{} --{}".format(mysql_config.path, what))
     data = f.read().strip().split()
-    ret = f.close()
-    if ret:
+    if ret := f.close():
         if ret/256:
             data = []
         if ret/256 > 1:

@@ -49,8 +49,7 @@ def numeric_part(s):
     16
     """
     
-    m = re_numeric_part.match(s)
-    if m:
+    if m := re_numeric_part.match(s):
         return int(m.group(1))
     return None
 
